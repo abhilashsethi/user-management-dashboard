@@ -1,9 +1,10 @@
 import { Alert } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-
 import Loader from "../common/Loader";
+import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 
-function UsersTable({ users, loading, error }) {
+function UsersTable({ users, loading, error, onEdit }) {
   const columns = [
     {
       field: "id",
@@ -29,6 +30,20 @@ function UsersTable({ users, loading, error }) {
       field: "department",
       headerName: "Department",
       flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 120,
+      sortable: false,
+      renderCell: (params) => (
+        <IconButton
+          color="primary"
+          onClick={() => onEdit(params.row)}
+        >
+          <EditIcon />
+        </IconButton>
+      ),
     },
   ];
 

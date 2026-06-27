@@ -5,11 +5,14 @@ import UsersTable from "../components/table/UsersTable";
 import useUsers from "../hooks/useUsers";
 import SearchBar from "../components/common/SearchBar";
 import { Typography } from "@mui/material";
-import AddUserDialog from "../components/forms/forms/AddUserDialog";
+import AddUserDialog from "../components/forms/AddUserDialog";
 import { useState } from "react";
+import EditUserDialog from "../components/forms/EditUserDialog";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
   const {
     users,
     totalUsers,
@@ -18,6 +21,7 @@ function Dashboard() {
     searchTerm,
     setSearchTerm,
     addUser,
+    editUser
   } = useUsers();
 
   return (
@@ -57,10 +61,24 @@ function Dashboard() {
             }}
           />
 
+          <EditUserDialog
+            open={editOpen}
+            user={selectedUser}
+            onClose={() => setEditOpen(false)}
+            onSave={(updatedUser) => {
+              editUser(updatedUser.id, updatedUser);
+              setEditOpen(false);
+            }}
+          />
+
           <UsersTable
             users={users}
             loading={loading}
             error={error}
+            onEdit={(user) => {
+              setSelectedUser(user);
+              setEditOpen(true);
+            }}
           />
         </Stack>
       </Paper>

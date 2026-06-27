@@ -7,7 +7,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import UserForm from "../UserForm";
+import UserForm from "./UserForm";
 
 
 const initialState = {

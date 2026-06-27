@@ -59,6 +59,23 @@ const useUsers = () => {
     }
   };
 
+  const editUser = async (id, updatedUser) => {
+    try {
+      await userService.editUser(id, updatedUser);
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === id
+            ? { ...user, ...updatedUser }
+            : user
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      setError("Failed to update user.");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -71,6 +88,7 @@ const useUsers = () => {
     searchTerm,
     setSearchTerm,
     addUser,
+    editUser,
     refetch: fetchUsers,
   };
 };

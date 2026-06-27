@@ -5,8 +5,11 @@ import UsersTable from "../components/table/UsersTable";
 import useUsers from "../hooks/useUsers";
 import SearchBar from "../components/common/SearchBar";
 import { Typography } from "@mui/material";
+import AddUserDialog from "../components/forms/forms/AddUserDialog";
+import { useState } from "react";
 
 function Dashboard() {
+  const [open, setOpen] = useState(false);
   const {
     users,
     totalUsers,
@@ -14,6 +17,7 @@ function Dashboard() {
     error,
     searchTerm,
     setSearchTerm,
+    addUser,
   } = useUsers();
 
   return (
@@ -29,6 +33,7 @@ function Dashboard() {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              onClick={() => setOpen(true)}
             >
               Add User
             </Button>
@@ -42,6 +47,15 @@ function Dashboard() {
           <Typography variant="body2" color="text.secondary">
             Total Users: {users.length} / {totalUsers}
           </Typography>
+
+          <AddUserDialog
+            open={open}
+            onClose={() => setOpen(false)}
+            onSave={(user) => {
+              addUser(user);
+              setOpen(false);
+            }}
+          />
 
           <UsersTable
             users={users}

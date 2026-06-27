@@ -43,6 +43,22 @@ const useUsers = () => {
     }
   };
 
+  const addUser = async (user) => {
+    try {
+      const response = await userService.addUser(user);
+
+      const newUser = {
+        id: users.length + 1,
+        ...response,
+      };
+
+      setUsers((prevUsers) => [newUser, ...prevUsers]);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to add user.");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -54,6 +70,7 @@ const useUsers = () => {
     error,
     searchTerm,
     setSearchTerm,
+    addUser,
     refetch: fetchUsers,
   };
 };

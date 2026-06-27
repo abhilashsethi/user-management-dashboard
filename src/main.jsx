@@ -4,11 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from './theme/theme.js';
+import { Toaster } from "react-hot-toast";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
       <App />
     </ThemeProvider>
   </StrictMode>,

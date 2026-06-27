@@ -6,7 +6,7 @@ function Loader() {
       sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        // alignItems: "center",
         py: 5,
       }}
     >

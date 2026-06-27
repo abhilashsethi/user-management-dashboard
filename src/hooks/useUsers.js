@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
+import toast from "react-hot-toast";
 
 const useUsers = () => {
   const [users, setUsers] = useState([]);
@@ -57,6 +58,7 @@ const useUsers = () => {
       setUsers(formattedUsers);
     } catch (err) {
       setError("Failed to fetch users.");
+      toast.error("Unable to fetch users");
       console.error(err);
     } finally {
       setLoading(false);
@@ -73,16 +75,22 @@ const useUsers = () => {
       };
 
       setUsers((prevUsers) => [newUser, ...prevUsers]);
+      toast.success("User added successfully");
     } catch (err) {
       console.error(err);
       setError("Failed to add user.");
+      toast.error("Failed to add user");
     }
   };
 
   const editUser = async (id, updatedUser) => {
     try {
-      await userService.editUser(id, updatedUser);
+      // Only call API for users that exist on the server
+      if (id <= 10) {
+        await userService.editUser(id, updatedUser);
+      }
 
+      // Always update local state
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === id
@@ -90,22 +98,28 @@ const useUsers = () => {
             : user
         )
       );
+
+      toast.success("User updated successfully");
     } catch (err) {
       console.error(err);
-      setError("Failed to update user.");
+      toast.error("Failed to update user.");
     }
   };
 
   const deleteUser = async (id) => {
     try {
-      await userService.removeUser(id);
+      if (id <= 10) {
+        await userService.removeUser(id);
+      }
 
       setUsers((prevUsers) =>
         prevUsers.filter((user) => user.id !== id)
       );
+
+      toast.success("User deleted successfully");
     } catch (err) {
       console.error(err);
-      setError("Failed to delete user.");
+      toast.error("Failed to delete user.");
     }
   };
 

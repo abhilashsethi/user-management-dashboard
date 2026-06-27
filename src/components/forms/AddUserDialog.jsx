@@ -8,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import UserForm from "./UserForm";
+import toast from "react-hot-toast";
 
 
 const initialState = {
@@ -40,9 +41,18 @@ function AddUserDialog({
       !formData.email ||
       !formData.department
     ) {
-      alert("All fields are required");
+      toast.error("All fields are required");
       return;
     }
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+
     onSave(formData);
 
     setFormData(initialState);

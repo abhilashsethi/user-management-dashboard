@@ -1,9 +1,12 @@
-import { Alert } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Loader from "../common/Loader";
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Alert,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 
 function UsersTable({ users, loading, error, onEdit, onDelete }) {
   const columns = [
@@ -39,22 +42,26 @@ function UsersTable({ users, loading, error, onEdit, onDelete }) {
       sortable: false,
       renderCell: (params) => (
         <>
-          <IconButton
-            color="primary"
-            onClick={() => onEdit(params.row)}
-          >
-            <EditIcon />
-          </IconButton>
+          <Tooltip title="Edit User">
+            <IconButton
+              color="primary"
+              onClick={() => onEdit(params.row)}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton
-            color="error"
-            onClick={() => onDelete(params.row)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Delete User">
+            <IconButton
+              color="error"
+              onClick={() => onDelete(params.row)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </>
       ),
-    },
+    }
   ];
 
   if (loading) {
@@ -63,6 +70,14 @@ function UsersTable({ users, loading, error, onEdit, onDelete }) {
 
   if (error) {
     return <Alert severity="error">{error}</Alert>;
+  }
+
+  if (!loading && users.length === 0) {
+    return (
+      <Alert severity="info">
+        No users found.
+      </Alert>
+    );
   }
 
   return (
@@ -79,6 +94,23 @@ function UsersTable({ users, loading, error, onEdit, onDelete }) {
         },
       }}
       disableRowSelectionOnClick
+      sx={{
+        border: 0,
+
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: "#1976d2",
+          color: "#fff",
+          fontWeight: "bold",
+        },
+
+        "& .MuiDataGrid-cell:focus": {
+          outline: "none",
+        },
+
+        "& .MuiDataGrid-row:hover": {
+          backgroundColor: "#f5f5f5",
+        },
+      }}
     />
   );
 }

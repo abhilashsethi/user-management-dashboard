@@ -6,19 +6,39 @@ const useUsers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [filters, setFilters] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    department: "",
+  });
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
-      const value = searchTerm.toLowerCase();
+      const search = searchTerm.toLowerCase();
 
-      return (
-        user.firstName.toLowerCase().includes(value) ||
-        user.lastName.toLowerCase().includes(value) ||
-        user.email.toLowerCase().includes(value) ||
-        user.department.toLowerCase().includes(value)
-      );
+      const matchesSearch =
+        user.firstName.toLowerCase().includes(search) ||
+        user.lastName.toLowerCase().includes(search) ||
+        user.email.toLowerCase().includes(search) ||
+        user.department.toLowerCase().includes(search);
+
+      const matchesFilters =
+        user.firstName
+          .toLowerCase()
+          .includes(filters.firstName.toLowerCase()) &&
+        user.lastName
+          .toLowerCase()
+          .includes(filters.lastName.toLowerCase()) &&
+        user.email
+          .toLowerCase()
+          .includes(filters.email.toLowerCase()) &&
+        user.department
+          .toLowerCase()
+          .includes(filters.department.toLowerCase());
+
+      return matchesSearch && matchesFilters;
     });
-  }, [users, searchTerm]);
+  }, [users, searchTerm, filters]);
 
   const fetchUsers = async () => {
     try {
@@ -100,6 +120,8 @@ const useUsers = () => {
     error,
     searchTerm,
     setSearchTerm,
+    filters,
+    setFilters,
     addUser,
     editUser,
     deleteUser,

@@ -9,12 +9,15 @@ import AddUserDialog from "../components/forms/AddUserDialog";
 import { useState } from "react";
 import EditUserDialog from "../components/forms/EditUserDialog";
 import ConfirmDialog from "../components/common/ConfirmDialog";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterDialog from "../components/filters/FilterDialog";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const {
     users,
     totalUsers,
@@ -22,6 +25,8 @@ function Dashboard() {
     error,
     searchTerm,
     setSearchTerm,
+    filters,
+    setFilters,
     addUser,
     editUser,
     deleteUser,
@@ -35,8 +40,17 @@ function Dashboard() {
 
           <Stack
             direction="row"
+            spacing={2}
             justifyContent="flex-end"
           >
+            <Button
+              variant="outlined"
+              startIcon={<FilterListIcon />}
+              onClick={() => setFilterOpen(true)}
+            >
+              Filter
+            </Button>
+
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -87,6 +101,13 @@ function Dashboard() {
               deleteUser(selectedUser.id);
               setDeleteOpen(false);
             }}
+          />
+
+          <FilterDialog
+            open={filterOpen}
+            onClose={() => setFilterOpen(false)}
+            filters={filters}
+            setFilters={setFilters}
           />
 
           <UsersTable

@@ -1,4 +1,4 @@
-import PeopleIcon from "@mui/icons-material/People";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Stack, Typography } from "@mui/material";
 
 function PageHeader() {
@@ -8,14 +8,23 @@ function PageHeader() {
       spacing={2}
     // alignItems="center"
     >
-      <PeopleIcon
+      <PeopleAltIcon
         color="primary"
-        fontSize="large"
+        sx={{ fontSize: 40 }}
       />
 
-      <Typography variant="h4">
-        User Management Dashboard
-      </Typography>
+      <Stack>
+        <Typography variant="h4" fontWeight={700}>
+          User Management Dashboard
+        </Typography>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+        >
+          Manage, search and organize users efficiently.
+        </Typography>
+      </Stack>
     </Stack>
   );
 }

@@ -8,11 +8,13 @@ import { Typography } from "@mui/material";
 import AddUserDialog from "../components/forms/AddUserDialog";
 import { useState } from "react";
 import EditUserDialog from "../components/forms/EditUserDialog";
+import ConfirmDialog from "../components/common/ConfirmDialog";
 
 function Dashboard() {
   const [open, setOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const {
     users,
     totalUsers,
@@ -21,7 +23,8 @@ function Dashboard() {
     searchTerm,
     setSearchTerm,
     addUser,
-    editUser
+    editUser,
+    deleteUser,
   } = useUsers();
 
   return (
@@ -69,6 +72,21 @@ function Dashboard() {
               editUser(updatedUser.id, updatedUser);
               setEditOpen(false);
             }}
+            onCancel={() => setDeleteOpen(false)}
+            onConfirm={() => {
+              deleteUser(selectedUser.id);
+              setDeleteOpen(false);
+            }}
+          />
+          <ConfirmDialog
+            open={deleteOpen}
+            title="Delete User"
+            content={`Are you sure you want to delete ${selectedUser?.firstName}?`}
+            onCancel={() => setDeleteOpen(false)}
+            onConfirm={() => {
+              deleteUser(selectedUser.id);
+              setDeleteOpen(false);
+            }}
           />
 
           <UsersTable
@@ -78,6 +96,10 @@ function Dashboard() {
             onEdit={(user) => {
               setSelectedUser(user);
               setEditOpen(true);
+            }}
+            onDelete={(user) => {
+              setSelectedUser(user);
+              setDeleteOpen(true);
             }}
           />
         </Stack>

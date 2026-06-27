@@ -76,6 +76,19 @@ const useUsers = () => {
     }
   };
 
+  const deleteUser = async (id) => {
+    try {
+      await userService.removeUser(id);
+
+      setUsers((prevUsers) =>
+        prevUsers.filter((user) => user.id !== id)
+      );
+    } catch (err) {
+      console.error(err);
+      setError("Failed to delete user.");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -89,6 +102,7 @@ const useUsers = () => {
     setSearchTerm,
     addUser,
     editUser,
+    deleteUser,
     refetch: fetchUsers,
   };
 };

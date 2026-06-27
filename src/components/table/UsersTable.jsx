@@ -3,8 +3,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import Loader from "../common/Loader";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-function UsersTable({ users, loading, error, onEdit }) {
+function UsersTable({ users, loading, error, onEdit, onDelete }) {
   const columns = [
     {
       field: "id",
@@ -34,15 +35,24 @@ function UsersTable({ users, loading, error, onEdit }) {
     {
       field: "actions",
       headerName: "Actions",
-      width: 120,
+      width: 140,
       sortable: false,
       renderCell: (params) => (
-        <IconButton
-          color="primary"
-          onClick={() => onEdit(params.row)}
-        >
-          <EditIcon />
-        </IconButton>
+        <>
+          <IconButton
+            color="primary"
+            onClick={() => onEdit(params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+
+          <IconButton
+            color="error"
+            onClick={() => onDelete(params.row)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </>
       ),
     },
   ];
